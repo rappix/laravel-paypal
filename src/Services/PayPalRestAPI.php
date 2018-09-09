@@ -46,14 +46,16 @@ class PayPalRestAPI
      */
     public function __construct()
     {
-        $mode = config('paypal.mode');
-        if (empty($mode) || !in_array($mode, ['sandbox', 'live'])) {
-            $mode = 'live';
-        }
-
-        $sandbox = ($mode === 'sandbox') ? true : false;
         if (function_exists('config')) {
+            $mode = config('paypal.mode');
+            if (empty($mode) || !in_array($mode, ['sandbox', 'live'])) {
+                $mode = 'live';
+            }
+
+            $sandbox = ($mode === 'sandbox') ? true : false;
             $credentials = config('paypal.'.$mode);
+            $credentials['validate_ssl'] = config('paypal.validate_ssl');
+            $credentials['locale'] = config('paypal.locale');
 
             $this->setApiCredentials($credentials, $sandbox);
         }
@@ -89,8 +91,6 @@ class PayPalRestAPI
         }
 
         $this->setHttpClientConfiguration();
-
-        $this->accessToken();
     }
 
     /**

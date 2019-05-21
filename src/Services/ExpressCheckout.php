@@ -157,13 +157,14 @@ class ExpressCheckout
      *
      * @return array|\Psr\Http\Message\StreamInterface
      */
-    public function setExpressCheckout($data, $subscription = false)
+    public function setExpressCheckout($data, $subscription = false, $tax)
     {
         $this->setItemSubTotal($data);
 
         $this->post = $this->setCartItems($data['items'])->merge([
             'PAYMENTREQUEST_0_ITEMAMT'       => $this->subtotal,
-            'PAYMENTREQUEST_0_AMT'           => $data['total'],
+            'PAYMENTREQUEST_0_AMT'           => $data['total'] + $tax,
+            'PAYMENTREQUEST_0_TAXAMT'        => $tax,
             'PAYMENTREQUEST_0_PAYMENTACTION' => $this->paymentAction,
             'PAYMENTREQUEST_0_CURRENCYCODE'  => $this->currency,
             'PAYMENTREQUEST_0_DESC'          => $data['invoice_description'],

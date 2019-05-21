@@ -157,7 +157,7 @@ class ExpressCheckout
      *
      * @return array|\Psr\Http\Message\StreamInterface
      */
-    public function setExpressCheckout($data, $subscription = false, $tax)
+    public function setExpressCheckout($data, $subscription = false, $tax = 0.00)
     {
         $this->setItemSubTotal($data);
 
